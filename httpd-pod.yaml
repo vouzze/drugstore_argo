@@ -15,7 +15,7 @@ spec:
   template:
     metadata:
       name: httpd-pod
-      namespace: vouzze/hyt-http:15
+      namespace: drugstore
       labels:
         app: httpd-web
         location: IN
@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: httpd-web
-          image: bellsoft/liberica-openjdk-alpine:11
+          image: vouzze/hyt-http:15
           volumeMounts:
             - name: httpd-volume
               mountPath: /opt
