@@ -11,18 +11,6 @@ spec:
     requests:
       storage: 1Gi
 ---
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: httpd-pv
-  namespace: drugstore
-spec:
-  storageClassName: http-ssd
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
----
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
