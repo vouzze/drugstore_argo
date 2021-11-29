@@ -1,0 +1,36 @@
+pipeline {
+  agent any
+  stages {
+    stage('Docker Build') {
+     steps {
+       sh "docker build -t vouzze/drugstore-image:${env.BUILD_NUMBER} ."
+       }
+    }
+	
+	stage('Docker Push') {
+      steps {
+	  withCredentials([usernamePassword(credentialsId: 'dockerHubUser', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh "docker push vouzze/drugstore-image:${env.BUILD_NUMBER}"
+        }
+      }
+	 }
+	stage('Docker Remove Image') {
+      steps {
+        sh "docker rmi vouzze/drugstore-image:${env.BUILD_NUMBER}"
+      }
+    }
+  
+    stage('Apply Kubernetes Files') {
+      steps {
+          withKubeConfig([credentialsId: 'credentialsId', 
+	      serverUrl: 'https://34.159.168.229',
+          namespace: 'drugstore']) {
+          //sh "kubectl create -f httpd-storage.yaml"
+          sh 'cat httpd-pod.yaml | sed "s/35/$BUILD_NUMBER/g" |kubectl apply -f -'
+	  //sh "kubectl create -f httpd-svc.yaml"
+        }
+      }
+  }
+}
+}
