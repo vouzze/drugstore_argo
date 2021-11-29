@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: httpd-web
-          image: bellsoft/liberica-openjdk-alpine:11
+          image: vouzze/drugstore-image:35
           volumeMounts:
             - name: httpd-volume
               mountPath: /opt
