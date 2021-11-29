@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: httpd-web
-          image: adoptopenjdk/openjdk11
+          image: bellsoft/liberica-openjdk-alpine:11
           volumeMounts:
             - name: httpd-volume
               mountPath: /opt
